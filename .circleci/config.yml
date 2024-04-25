@@ -1,11 +1,19 @@
 version: 2.1
-executors:
-  my-executor:
-    docker:
-      - image: cimg/ruby:3.0.3-browsers
 
+# Define un flujo de trabajo llamado "build-test-deploy"
+workflows:
+  version: 2
+  build-test-deploy:
+    jobs:
+      - build
+
+# Define el trabajo de construcción "build"
 jobs:
-  my-job:
-    executor: my-executor
+  build:
+    docker:
+      - image: circleci/openjdk:11-jdk
     steps:
-      - run: echo "Hello executor!"
+      - checkout
+      - run:
+          name: Build project
+          command: ./gradlew build
